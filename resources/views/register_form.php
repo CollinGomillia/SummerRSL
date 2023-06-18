@@ -17,6 +17,16 @@ if(isset($_POST['submit'])){
    if(mysqli_num_rows($result) > 0){
 
       $error[] = 'user already exist!';
+
+   }else{
+      if($pass != $cpass){
+         $error[] = 'passwords do not match';
+      }else{
+         $insert = "INSERT INTO user_form(name,email, password, user_type) VALUES('$name','$email','$pass','$user_type' )";
+         mysqli_query($conn, $insert);
+         header('location:login_form.blade.php');
+      }
+   
    }
 };
 
@@ -39,6 +49,14 @@ if(isset($_POST['submit'])){
 
    <form action="" method="post">
       <h3>Register Now</h3>
+      <?php
+      if(isset($error)){
+         foreach($error as $error){
+            echo '<span class="error-msg">'.$error.'</span>';
+         };
+      };
+      
+      ?>
       <input type="text" name="name" required placeholder="enter full name">
       <input type="email" name="email" required placeholder="enter email address">
       <input type="password" name="password" required placeholder="enter password">
